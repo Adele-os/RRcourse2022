@@ -17,5 +17,16 @@ library(rvest) # For web scraping
 library(stringr) # Helping us with regex
 ```
 
+```{r,include=FALSE, cache=TRUE}
+url <- "https://en.wikipedia.org/wiki/The_Office_(American_TV_series)"
+```
+
 # Description 
-[*The Office*](https://en.wikipedia.org/wiki/The_Office_(American_TV_series)) is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the *Scranton, Pennsylvania* branch of the fictional *Dunder Mifflin* Paper Company. It aired on **NBC** from March 24, 2005, to May 16, 2013, spanning a total of nine seasons. Based on the 2001–2003 **BBC** series of the same name created by *Ricky Gervais* and *Stephen Merchant*, it was adapted for American television by *Greg Daniels*, a veteran writer for *Saturday Night Live*, *King of the Hill*, and *The Simpsons*. 
+[*The Office*](url) is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the *Scranton, Pennsylvania* branch of the fictional *Dunder Mifflin* Paper Company. It aired on **NBC** from March 24, 2005, to May 16, 2013, spanning a total of nine seasons. Based on the 2001–2003 **BBC** series of the same name created by *Ricky Gervais* and *Stephen Merchant*, it was adapted for American television by *Greg Daniels*, a veteran writer for *Saturday Night Live*, *King of the Hill*, and *The Simpsons*. 
+
+
+# A shot or logo from the show
+Below you can find a picture from the show
+
+<img src=https://www.denofgeek.com/wp-content/uploads/2020/03/the-office-nbc.png?resize=768%2C432>
+
