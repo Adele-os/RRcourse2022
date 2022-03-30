@@ -44,11 +44,12 @@ df <- df[[1]]
 
 # the headers need to be cahnged
 names(df) <- df[1,]
-# Manipulatng the column names
-df <- df[-1,c(-1,-3)] 
-season_count <- nrow(df)
-df[,c(4,5)] <- NULL
 
+# Manipulatng the column names
+df <- df[-1,] 
+season_count <- nrow(df)
+df[,c(6,7)] <- NULL
+names(df[,5]) <- "Viewers(millions)"
 # Fisrt we need to mutate some columns so that only the numeric parts are selected
 df <- df %>%
   mutate(`Viewers(millions)` = str_extract(`Viewers(millions)`, "[^\\[]+"))
@@ -61,3 +62,23 @@ avg_viewers <- round(as.numeric(summary(df$`Viewers(millions)`)[4]),2)
 ```
 
 Based on the scraped data from [*The Office*](url) page in Wikipedia, we can see that the maximum number of the viewers was **`r max_viewers`** millions and the minimum was **`r min_viewers`** millions. Also the average number of the viewers from the calculated summary is **`r avg_viewers`** millions which shows that how successful the series was.
+
+# A graph for the number of viewers by season
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# First we need to extract the date in a correct format
+df <- df %>%
+  mutate(Date = str_extract(Date, "[^\\(]+")) 
+
+# Now we need to change it to the date column
+df$Date <- as.Date(df$Date, format = "%B %d, %Y")
+
+# Plot
+plot(df$Date,df$`Viewers(millions)`,
+     type = 'l',
+     col = 'blue', 
+     lwd=2.0,
+     ylab = "Viewers in millions", 
+     xlab = "Year of season",
+     main = "Number of viewers for each season across time", )
+points(x = df$Date, y = df$`Viewers(millions)`, pch = 15, col = "red")
+```
