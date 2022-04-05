@@ -15,6 +15,7 @@ library(dplyr) # Data manipulation
 library(ggplot2) # For plotting
 library(rvest) # For web scraping
 library(stringr) # Helping us with regex
+library(ggthemes) # The economist theme
 ```
 
 ```{r,include=FALSE, cache=TRUE}
@@ -81,4 +82,25 @@ plot(df$Date,df$`Viewers(millions)`,
      xlab = "Year of season",
      main = "Number of viewers for each season across time", )
 points(x = df$Date, y = df$`Viewers(millions)`, pch = 15, col = "red")
+```
+
+
+# Plot of Season-to-season changes
+```{r, echo=FALSE, cache=TRUE, message=FALSE, fig.dim= c(6,3)}
+df <- df %>%
+  mutate(diff_of_view = `Viewers(millions)` - lag(`Viewers(millions)`, default = first(`Viewers(millions)`)))
+```
+
+We can present the difference in viewership for season to season change. This time we will use ggplot package for a nicer look! :)
+
+```{r, cache=TRUE, warning=FALSE, echo=FALSE, message=FALSE}
+ggplot(data=df, 
+       aes(x=Season, y=diff_of_view)) +
+  geom_bar(stat="identity", color="white", fill="#E69F00")+
+  geom_text(aes(label=round(diff_of_view,2), vjust=.6)) +
+  theme_economist() +
+  labs(title = "Number of viewers in millions from season to season",
+        subtitle = "The biggest positive jump was from s3 to s4",
+        caption = "Data source: Scraped data from Wikipedia") + 
+  ylab("Viewers (millions)")
 ```
