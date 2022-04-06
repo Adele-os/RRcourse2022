@@ -104,3 +104,19 @@ ggplot(data=df,
         caption = "Data source: Scraped data from Wikipedia") + 
   ylab("Viewers (millions)")
 ```
+
+# A short description
+
+```{r, cache=TRUE, echo=FALSE, include=FALSE}
+# First, some data type changes need to be done
+df$Season <- as.numeric(df$Season)
+df$Episodes <- as.numeric(df$Episodes)
+# Creating variables for the inline calculated values
+num_of_seasons <- length(df$Season)
+season_with_max_ep <- df$Season[df$Episodes == max(df$Episodes)]
+season_with_highest_drop <- df$Season[df$diff_of_view == min(df$diff_of_view)]
+average_change_of_viewers <- round(mean(df$diff_of_view),2)
+season_with_max_viewers <- df$Season[df$`Viewers(millions)` == max(df$`Viewers(millions)`)]
+```
+
+We can see that in **The Office** the number of episodes changed through these **`r num_of_seasons`** seasons. The season with the maximum number of episodes was  **`r season_with_max_ep`** with **`r max(df$Episodes)`** episodes. Another thing to mention here is that the highest drop in number of viewers in the show which happened in season **`r season_with_highest_drop`** and the average change of viewers in the series was **`r average_change_of_viewers`** millions. Needles to say that the best season based the number of viewers was season **`r season_with_max_viewers`**, which is not a surprised as usually the first seasons are more popular and when the shows moving on, the number usually drops. 
