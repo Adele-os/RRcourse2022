@@ -1,16 +1,26 @@
 ---
-title: "Exercise 2"
-author: "Wojciech Hardy; Łukasz Nawaro"
-date: "3/29/2022"
-output: html_document
+title: Game of Thrones
+author: Adele Ossareh^[University of Warsaw, a.ossareh@student.uw.edu.pl]
+date: "4/14/2022"
+output: pdf_document
+params:
+  season:
+    label: "Choose the season:"
+    input: slider
+    value: 1
+    min: 1
+    max: 8
+    step: 1
+    sep: ""
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-load("../Data/season_1.RData")
+```{r, include=FALSE}
+library(stringr) # For str_extract() 
+load(paste0("C:/Users/SONY/Documents/GitHub/RRcourse2022/Data/",'season_',params$season,'.RDATA'))
+season <- params$season
 ```
 
-# Game of Thrones - Season 1 summary in numbers
+# Game of Thrones - Season **`r season`** summary in numbers
 
 ### __(*Warning:* spoilers ahead)__
 
@@ -24,19 +34,30 @@ Set on the fictional continents of Westeros and Essos, Game of Thrones has a lar
 
 ***
 
-### Season 1 summary
+### Season **`r season`** summary
+```{r, echo=FALSE}
+# Defining inline values
+number_of_episodes <- nrow(season_data)
+first_aired <- str_extract(season_data$premiere_date[1],"^([^,])+")
+last_aired <- str_extract(season_data$premiere_date[nrow(season_data)],"^([^,])+")
+year <- substr(strsplit(season_data$premiere_date[1],',')[[1]][2],2,5)
+avg_viewers <- round(mean(season_data$viewers),2)
+viewers_from <- season_data$viewers[1]
+viewers_to <- season_data$viewers[nrow(season_data)]
+most_pop <- season_data$title[season_data$viewers == max(season_data$viewers)]
+desc_of_most_pop <- season_data$description[season_data$viewers == max(season_data$viewers)]
+```
 
-Season 1 of Game of Thrones consisted of 10 episodes that aired between April 17 and June 19, 2011 on HBO. The show gathered an average of 2.515 first-day TV viewers in the US, with the number growing from 2.22 to 3.04 million by the end of the season.
+Season **`r season`** of Game of Thrones consisted of **`r number_of_episodes`** episodes that aired between **`r first_aired`** and **`r last_aired`**, **`r year`** on HBO. The show gathered an average of **`r avg_viewers`** first-day TV viewers in the US, with the number growing from **`r viewers_from`** to **`r viewers_to`** million by the end of the season.
 
-The most popular episode of the season was "Fire and Blood", in which:
+The most popular episode of the season was **`r most_pop`**, in which:
 
-> "The North secedes from the Seven Kingdoms and proclaims Robb as king. With Jaime as the Starks' prisoner and Robert's two brothers, Stannis and Renly, each challenging Joffrey's claim to the throne, Tywin appoints Tyrion as acting King's Hand, while Tywin fights to defend Joffrey's reign. Jon attempts to desert the Night's Watch to avenge Ned and join Robb, but his Night's Watch brothers convince him to honor his oath. Jon joins an expedition to search for Benjen Stark beyond the Wall. Yoren, a Night's Watch recruiter, smuggles Arya out of King's Landing disguised as a boy, while Joffrey intends to crown Sansa his queen, despite executing her father. Daenerys's baby is born deformed and dead, and Drogo is left in a vegetative state by the witch's treacherous magic. Daenerys compassionately ends Drogo's life. She places the three dragon eggs on Drogo's funeral pyre and sets it afire, also burning the witch alive. Ignoring Jorah's pleas, she walks into the flames. When the embers die the following morning, Daenerys is found in the ashes, unharmed, flanked by three newly-hatched baby dragons. Jorah and other witnesses kneel before her."
-
+> `r desc_of_most_pop`
 ***
 
 You can see how the viewership of the episodes changed in Figure 1.
 
-```{r viewers_plot}
+```{r viewers_plot, echo=FALSE}
 plot(season_data$viewers, type="l", col="red", lwd=5, xlab = "Episode number", ylab = "1st day TV viewers in the US (millions)")
 ```
 
@@ -44,9 +65,9 @@ plot(season_data$viewers, type="l", col="red", lwd=5, xlab = "Episode number", y
 
 Finally, the episodes with the above-average viewership were:
 
-| No. in season | Title  | Directed by  |
-|:------        |:-----: |:------:      |
-| 5             | "The Wolf and the Lion"  | Brian Kirk      |
-| 8             | "The Pointy End" | Daniel Minahan      |
-| 9             | "Baelor" | Alan Taylor      |
-| 10            | "Fire and Blood" | Alan Taylor      |
+```{r, echo=FALSE}
+df <- season_data[season_data$viewers > mean(season_data$viewers),c('no_season','title','directed_by')]
+names(df) <- c("No. in season","Title","Directed by")
+rownames(df) <- NULL # To remove row names
+knitr::kable(df, row.names = FALSE)
+```
