@@ -2,7 +2,7 @@
 # Reproducible Research 2022
 # Wojciech Hardy & Lukasz Nawaro
 
-setwd("")
+setwd("C:/Users/SONY/Documents/GitHub/RRcourse2022/RR_Apr_07_13")
 
 # We need to load the necessary packages if we're operating through an R script.
 
@@ -10,13 +10,25 @@ library(rmarkdown)
 
 # We can render an .Rmd document by using the render() function
 
-render("RMD_class_1_cut.Rmd")
+# render("RMD_class_1_cut.Rmd")
+
+# This part will create 8 reports for each season in PDF 
+for (season in seq(8)) {
+  render("Assignment 3.Rmd", 
+                    output_file = paste0('Report of season ',season,'.pdf'),
+                    params = list(season = season))
+}
+
+
+# We can render an .Rmd document by using the render() function
+
+# render("RMD_class_1_cut.Rmd")
 
 # The render function can overwrite the document settings
 
-render("RMD_class_1_cut.Rmd", output_format = "word_document")   # switches the output format
+# render("RMD_class_1_cut.Rmd", output_format = "word_document")   # switches the output format
 
-render("RMD_class_1_cut.Rmd", clean = FALSE)   # tells knitr to keep the intermediate files (e.g. ".md")
+# render("RMD_class_1_cut.Rmd", clean = FALSE)   # tells knitr to keep the intermediate files (e.g. ".md")
 
 # See https://www.rdocumentation.org/packages/rmarkdown/versions/2.6/topics/render for more
 
